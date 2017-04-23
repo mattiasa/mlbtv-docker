@@ -2,3 +2,7 @@ version: '2'
 services:
   mlbtv:
     build: .
+    volumes:
+      - ./config:/root/.mlb
+      - ./videos:/videos
+    working_dir: /videos

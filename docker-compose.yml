@@ -6,3 +6,5 @@ services:
       - ./config:/root/.mlb
       - ./videos:/videos
     working_dir: /videos
+    environment:
+      - BASEURL=http://vimes.coloti.se/~mattiasa/mlb/

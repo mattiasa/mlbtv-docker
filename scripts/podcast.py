@@ -19,7 +19,7 @@ fg = FeedGenerator()
 fg.load_extension('podcast')
 
 fg.podcast.itunes_category('Technology', 'Podcasting')
-fg.title("Mattias MLB")
+fg.title("Mattias Vimes MLB")
 fg.logo(baseurl + "mlb_logo.jpg")
 fg.link(href=baseurl + "podcast.xml")
 fg.description("Mattias MLB games")

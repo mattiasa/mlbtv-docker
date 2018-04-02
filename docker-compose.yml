@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - ./config:/root/.mlb
-      - ./videos:/videos
+      - /mattiasa/public_html/mlb:/videos
     working_dir: /videos
     environment:
       - BASEURL=http://vimes.coloti.se/~mattiasa/mlb/

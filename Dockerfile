@@ -1,12 +1,12 @@
 FROM jrottenberg/ffmpeg:3.3
 
-RUN apt-get update && apt-get install -y wget unzip make gcc libssl-dev libconfig-dev libcurl4-openssl-dev python python-pip && apt-get clean
+RUN apt-get update && apt-get install -y wget unzip make gcc libssl-dev libconfig-dev libcurl4-openssl-dev python python-pip rtmpdump && apt-get clean
 
 RUN pip install feedgen
 
-RUN wget https://github.com/mattiasa/mlbtv-hls-nexdef/archive/mattiasa.zip
-RUN unzip mattiasa.zip
-RUN (cd mlbtv-hls-nexdef-mattiasa && make && cp mlbhls /usr/local/bin/)
+RUN wget https://github.com/mattiasa/mlbtv-hls-nexdef/archive/mattiasa-retry.zip
+RUN unzip mattiasa-retry.zip
+RUN (cd mlbtv-hls-nexdef-mattiasa-retry && make && cp mlbhls /usr/local/bin/)
 
 RUN wget https://github.com/mattiasa/mlbviewer/archive/master.zip && unzip master.zip && mv mlbviewer-master /mlbviewer
 

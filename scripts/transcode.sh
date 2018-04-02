@@ -24,7 +24,9 @@ if [ "X$audio" == "X" ]; then
     fi
 fi
 
-$dirpath/getsilence.sh $fn > $fn.silence
+if [ ! -f $fn.silence ]; then
+    $dirpath/getsilence.sh $fn > $fn.silence
+fi
 
 silences=$($dirpath/process_silence.py $fn.silence $audio)
 

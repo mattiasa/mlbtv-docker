@@ -41,9 +41,14 @@ with open(sys.argv[1]) as f:
         if m:
             silence_end = m.group(1)
 
+ranges.append((silence_end, 9999999999))
+
 i = 0
 
 cmd = """ -filter_complex " """
+
+if float(ranges[0][0]) > 2:
+    ranges.insert(0, (0, ranges[0][0]))
 
 for r in ranges:
 

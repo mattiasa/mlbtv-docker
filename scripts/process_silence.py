@@ -1,6 +1,7 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3.7
 
 import fileinput
+import random
 import re
 import sys
 import os
@@ -18,7 +19,7 @@ else:
 
 
 if len(sys.argv) < 2:
-    print "usage: %s <filename> [audiotrack]"
+    print("usage: %s <filename> [audiotrack]")
     exit(1)
 
 try:
@@ -44,6 +45,8 @@ with open(sys.argv[1]) as f:
 ranges.append((silence_end, 9999999999))
 
 i = 0
+
+random_extra = random.randint(1, 3600)
 
 cmd = """ -filter_complex " """
 
@@ -74,11 +77,12 @@ if video:
 
 map_str += "[a%(j)s]"
 
-channel_mapping = "".join([map_str % dict(j=j) for j in range(0,i)  ])
+channel_mapping = "".join([map_str % dict(j=j) for j in range(0,i)])
+
 #print channel_mapping
-cmd += "%(channels)sconcat=n=%(i)s:v=%(videos)s:a=1[out]\" " % dict(channels=channel_mapping, i=i, videos=1 if video else 0)
+cmd += "%(channels)sconcat=n=%(i)s:v=%(videos)s:a=1[concated]; [concated]tpad=stop_mode=clone:stop_duration=%(padding)s[out]\" " % dict(channels=channel_mapping, i=i, videos=1 if video else 0, padding=random_extra)
 # [v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[out]" \
 
 cmd += """ -map "[out]" -strict -2 """
 
-print cmd
+print(cmd)

@@ -1,15 +1,23 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3.7
 
 # -*- coding: utf-8 -*-
 
-from urlparse import urlparse
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
+
 from os.path import splitext, basename
 
 from feedgen.feed import FeedGenerator
 import os
 from stat import ST_SIZE
 import mimetypes
-import urllib
+try:
+    from urllib import pathname2url
+except ImportError:
+    from urllib.request import pathname2url
+    
 from pprint import pprint
 mediadir = "media"
 baseurl = os.getenv("BASEURL")
@@ -25,23 +33,23 @@ fg.link(href=baseurl + "podcast.xml")
 fg.description("Mattias MLB games")
 
 for fn in sorted(os.listdir(mediadir)):
-    print "Processing %s" % fn
+    print("Processing %s" % fn)
 
     if fn.endswith(".part"):
-        print "Skipping"
+        print("Skipping")
         continue
 
     pprint(fn)
     abs_fn = os.path.join(mediadir, fn)
 
     if not os.path.isfile(abs_fn):
-        print "Skipping"
+        print("Skipping")
         continue
 
     mimetype = mimetypes.guess_type(abs_fn)
     fn_stat = os.stat(abs_fn)
     if not mimetype[0]:
-        print "Could not guess mimetype for %s" % abs_fn
+        print("Could not guess mimetype for %s" % abs_fn)
         exit(1)
 
 #    mediainfo = MediaInfo.parse(abs_fn)
@@ -50,9 +58,9 @@ for fn in sorted(os.listdir(mediadir)):
 #            print track.duration
 #    print json.loads(mediainfo.to_json())['tracks'][0].keys()
 
-    url = mediaurl + urllib.pathname2url(fn)
+    url = mediaurl + pathname2url(fn)
 
-    unicode_fn = unicode(fn, 'latin-1')
+    unicode_fn = fn
 
     fe = fg.add_entry()
     fe.id(url)

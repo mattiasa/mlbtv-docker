@@ -3,8 +3,8 @@ services:
   mlbtv:
     build: .
     volumes:
-      - ./config:/root/.config/mlbstreamer
-      - ./videos:/videos
+      - ./config/config.yaml:/root/.config/mlbstreamer/config.yaml
+      - videos:/videos
     working_dir: /videos
     environment:
       - BASEURL=http://vimes.coloti.se/~mattiasa/mlb/

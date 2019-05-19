@@ -7,6 +7,6 @@ TSFILE=$(cd "$TMPDIR" && ls *.ts)
 mv "$TMPDIR/$TSFILE" .
 rm -rf "$TMPDIR"
 
-/usr/local/bin/transcode.sh "$TSFILE"
+bash -x /usr/local/bin/transcode.sh "$TSFILE"
 
 podcast.py

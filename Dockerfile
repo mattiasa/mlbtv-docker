@@ -28,15 +28,23 @@ RUN pip3.7 install https://github.com/mattiasa/streamlink/archive/0.13.90.zip
 #RUN wget https://github.com/mattiasa/mlbviewer/archive/master.zip && unzip master.zip && mv mlbviewer-master /mlbviewer
 RUN pip3.7 install requests_toolbelt
 
-#RUN apt-get update && apt-get install -y && apt-get clean
+RUN apt-get update && apt-get install -y git locales && apt-get clean
 
+# streamglob
+# RUN pip3 install git+https://github.com/tonycpsu/streamglob.git
+
+# mlbstreamer
 ADD src /src
-
 RUN (cd /src/mlbstreamer && python3.7 setup.py install)
 
 #RUN wget -O mlbstream.zip https://github.com/tonycpsu/mlbstreamer/archive/bb3caabcfda036e646415edb73a5b3270075a24e.zip && unzip mlbstream.zip && cd mlbstreamer-* && python3.7 setup.py install
 
 ADD scripts/* /usr/local/bin/
+
+RUN pip3.7 install pymediainfo
+
+ENV LANG=en_US.utf-8
+ENV LC_ALL=en_US.utf-8
 
 WORKDIR /
 

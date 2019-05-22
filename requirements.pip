@@ -1,0 +1,11 @@
+feedgen
+# streamlink
+raccoon==2.1.5
+win-inet-pton
+https://github.com/mattiasa/streamlink/archive/0.13.90.zip
+requests_toolbelt
+# git+https://github.com/tonycpsu/streamglob.git
+# https://github.com/tonycpsu/mlbstreamer/archive/bb3caabcfda036e646415edb73a5b3270075a24e.zip
+
+pymediainfo
+ffmpeg-python

@@ -4,9 +4,17 @@ services:
     build: .
     volumes:
       - ./config/config.yaml:/root/.config/mlbstreamer/config.yaml
+      - ./scripts/transcode.py:/usr/local/bin/transcode.py
       - videos:/videos
     working_dir: /videos
     environment:
       - BASEURL=http://vimes.coloti.se/~mattiasa/mlb/
 # Set this to only get the audio
 #      - NOVIDEO=1
+volumes:
+  videos:
+    driver: local
+    driver_opts:
+      type: cifs
+      o: vers=3.02,user=mattiasa,pass=urBik3LtV4z
+      device: "//10.237.237.9/mattiasa/public_html/mlb"

@@ -16,5 +16,5 @@ volumes:
     driver: local
     driver_opts:
       type: cifs
-      o: vers=3.02,user=mattiasa,pass=urBik3LtV4z
+      o: vers=3.02,user=${USERNAME},pass=${PASSWORD}
       device: "//10.237.237.9/mattiasa/public_html/mlb"

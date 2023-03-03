@@ -2,3 +2,7 @@ config/*
 videos/*
 *~
 .env
+__pycache__
+config.old/*
+config.streamglob
+\#*

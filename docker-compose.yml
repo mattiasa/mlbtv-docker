@@ -8,7 +8,7 @@ services:
       - videos:/videos
     working_dir: /videos
     environment:
-      - BASEURL=http://vimes.coloti.se/~mattiasa/mlb/
+      - BASEURL=http://internal.coloti.se/~mattiasa/mlb/
 # Set this to only get the audio
 #      - NOVIDEO=1
 volumes:
@@ -17,4 +17,4 @@ volumes:
     driver_opts:
       type: cifs
       o: vers=3.02,user=${USERNAME},pass=${PASSWORD}
-      device: "//10.237.237.9/mattiasa/public_html/mlb"
+      device: "//10.237.237.7/mattiasa/public_html/mlb"

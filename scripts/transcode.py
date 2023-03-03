@@ -178,7 +178,11 @@ def parse_silences(lines):
         if m:
             silence_end = m.group(1)
 
-    ranges.append((float(silence_end), 9999999999))
+    if silence_end:
+        ranges.append((float(silence_end), 9999999999))
+
+    if not ranges:
+        ranges.append((0, 9999999999))
 
     if float(ranges[0][0]) > 2:
         ranges.insert(0, (0, ranges[0][0]))
@@ -190,6 +194,7 @@ def main():
     parser.add_argument("filename", help="the filename to transcode")
     parser.add_argument("--debug", help="enable debug output", action="store_true")
     parser.add_argument("--audiotrack", help="the audio track to output", default="0x103")
+    parser.add_argument("--tv-audiotrack", help="tv audiotrack to detect silences from", default="0x101")
 
     args = parser.parse_args()
     
@@ -207,10 +212,18 @@ def main():
     # Run ffprobe
     ffp = get_ffprobe(args.filename)
     # Get the audio track with the tv sound
-    tv_aud_track = get_track(ffp, "audio", '0x101')
-    radio_aud_track = get_track(ffp, "audio", audiotrack)
-    # Get the silence ranges
+    tv_aud_track = get_track(ffp, "audio", args.tv_audiotrack)
 
+    if not tv_aud_track:
+        # If no track could be found, fall back to the first one
+        tv_aud_track = get_track(ffp, "audio", None)
+
+    radio_aud_track = get_track(ffp, "audio", audiotrack)
+    if not radio_aud_track:
+        # If no track could be found, fall back to the first one
+        radio_aud_track = get_track(ffp, "audio", None)
+
+    # Get the silence ranges
     print("Detecting silences")
     silences = detect_silences(args.filename, tv_aud_track)    
 
@@ -222,7 +235,7 @@ def main():
 
     output_filename = "media/{}-{}{}.mp4".format(os.path.splitext(args.filename)[0], radio_aud_track['index'], "" if video else "-audio")
     
-    output = padded_pipeline.output(output_filename)
+    output = padded_pipeline.output(output_filename, preset="veryfast")
     print("Output pipeline: ")
     print(ffmpeg.get_args(output))
     print("Transcoding...")

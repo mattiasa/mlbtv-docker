@@ -1,0 +1,24 @@
+FROM ubuntu:18.04
+#FROM python:3.6
+MAINTAINER Mattias Amnefelt <mattiasa@avm.se>
+
+ADD script/build-ffmpeg.sh /build-ffmpeg.sh
+
+#Dependencies for Imagemagick needed later (It refuses to build static)
+RUN apk add -U curl libstdc++ libice libsm libgomp libjpeg libpng tiff freetype fontconfig openjpeg graphviz jbig2dec zlib libbz2 xz lcms2 libwebp libxml2 \
+#Dependencies for FFMPeg that are not static
+ && apk add -U coreutils libass libtheora lame libvorbis bash \
+# Build dependencies (Removed below)
+ && apk add -U binutils libxml2-dev libxslt-dev libtool git file mercurial autoconf automake wget g++ libuv-dev make bash netcat-openbsd jq curl-dev openssl-dev --virtual .build-deps \
+# FFMpeg build deps
+ && apk add -U diffutils cmake yasm yasm-dev libass-dev libtheora-dev libvorbis-dev lame-dev --virtual .build-deps-ffmpeg \
+ && /bin/bash /build-ffmpeg.sh \
+#
+# Strip some libs
+ && strip /usr/local/lib/*.so*0.0 \
+ # Remove FFMpeg build deps
+ && apk del .build-deps-ffmpeg \
+# Remove rest of build deps
+ && apk del .build-deps \
+ && rm -rf /var/cache/apk/* \
+ && ldconfig /usr/local/lib /usr/lib /lib/

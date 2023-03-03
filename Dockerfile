@@ -12,7 +12,6 @@ RUN apt-get update && \
       curl \
       gcc \
       git \
-      graphviz \
       libconfig-dev \
       libcurl4-openssl-dev \
       libffi-dev \
